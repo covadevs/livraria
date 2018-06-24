@@ -17,15 +17,15 @@ public class LivrariaApplication {
         SpringApplication.run(LivrariaApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner init(AuthorRepository authorRepository) {
-        return (evt) -> Arrays.asList("leonardo,rafaela,sam,joao,jose".split(","))
-                .forEach(element -> {
-                    try {
-                        Author author = authorRepository.save(new Author(element));
-                    } catch(DataIntegrityViolationException exception) {
-                        exception.getMessage();
-                    }
-                });
-    }
+//    @Bean
+//    public CommandLineRunner init(AuthorRepository authorRepository) {
+//        return (evt) -> Arrays.asList("leonardo,rafaela,sam,joao,jose".split(","))
+//                .forEach(element -> {
+//                    try {
+//                        Author author = authorRepository.save(new Author(element));
+//                    } catch(DataIntegrityViolationException exception) {
+//                        exception.getMessage();
+//                    }
+//                });
+//    }
 }

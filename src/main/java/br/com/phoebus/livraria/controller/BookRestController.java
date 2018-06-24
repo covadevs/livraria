@@ -7,15 +7,11 @@ import br.com.phoebus.livraria.model.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.HttpServletBean;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
-import java.util.Collection;
 
 @RestController
 @RequestMapping("/books")
@@ -37,7 +33,7 @@ public class BookRestController {
 
     @PostMapping
     public ResponseEntity<?> addBook(@RequestBody Book book) {
-        Book result = bookRepository.save(book);
+        Book result = this.bookRepository.save(book);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest().path("/{id}")
@@ -45,7 +41,7 @@ public class BookRestController {
 
         result.setUri(location.toString());
 
-        bookRepository.save(result);
+        this.bookRepository.save(result);
 
         return ResponseEntity.created(location).build();
     }
@@ -76,7 +72,7 @@ public class BookRestController {
     public ResponseEntity<?> updateBook(@PathVariable Long bookId, @RequestBody Book book) {
         try {
             this.bookRepository.findById(bookId).ifPresent(result -> {
-                book.setId(bookId);
+                book.setId(result.getId());
                 book.setUri(result.getUri());
                 this.bookRepository.save(book);
             });
