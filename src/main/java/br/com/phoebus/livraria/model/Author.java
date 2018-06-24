@@ -3,11 +3,10 @@ package br.com.phoebus.livraria.model;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Author {
@@ -19,6 +18,7 @@ public class Author {
     @Column(unique = true)
     private String name;
 
+    @Column(unique = true)
     private String uri;
 
     @CreationTimestamp
@@ -69,4 +69,5 @@ public class Author {
     public void setName(String name) {
         this.name = name;
     }
+
 }

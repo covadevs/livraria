@@ -1,6 +1,8 @@
 package br.com.phoebus.livraria.controller;
 
+import br.com.phoebus.livraria.exception.AuthorNotFoundException;
 import br.com.phoebus.livraria.model.Author;
+import br.com.phoebus.livraria.model.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Collection;
 
 @RestController
 @RequestMapping("/authors")
@@ -26,6 +29,31 @@ public class AuthorRestController {
     @GetMapping
     public Iterable getAuthors() {
         return this.authorRepository.findAll();
+    }
+
+    @GetMapping("/{authorId}")
+    public Author getAuthor(@PathVariable Long authorId) {
+        return getAuthorResult(authorId);
+    }
+
+    //Duvida
+    //Como dar um get nos livros do author apenas com seu id sem usar o find author
+    //e passar o objeto
+    @GetMapping("/{authorId}/books")
+    public Collection<Book> getBooksFromAuthor(@PathVariable Long authorId) {
+        Author result = getAuthorResult(authorId);
+        return this.bookRepository.findBooksByAuthorsContaining(result);
+    }
+
+    @DeleteMapping("/{authorId}/books/{bookId}")
+    public ResponseEntity<?> removeAuthorFromBook(@PathVariable Long authorId, @PathVariable Long bookId) {
+        Author author = getAuthorResult(authorId);
+        Book book = getBookResult(bookId);
+        book.getAuthors().remove(author);
+
+        this.bookRepository.save(book);
+
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping
@@ -66,5 +94,15 @@ public class AuthorRestController {
         } catch(EmptyResultDataAccessException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private Author getAuthorResult(@PathVariable Long authorId) {
+        return this.authorRepository.findById(authorId)
+                .orElseThrow(() -> new AuthorNotFoundException(authorId));
+    }
+
+    private Book getBookResult(@PathVariable Long bookId) {
+        return this.bookRepository.findById(bookId)
+                .orElseThrow(() -> new AuthorNotFoundException(bookId));
     }
 }

@@ -19,6 +19,7 @@ public class Book {
 
     private String description;
 
+    @Column(unique = true)
     private String uri;
 
     @CreationTimestamp
@@ -28,7 +29,7 @@ public class Book {
     @UpdateTimestamp
     private Calendar updatedAt;
 
-    @OneToMany
+    @ManyToMany
     private Set<Author> authors = new HashSet<>();
 
     private Book() {}
