@@ -26,6 +26,7 @@ public class AuthorRestController {
         this.bookRepository = bookRepository;
     }
 
+    @CrossOrigin
     @GetMapping
     public Iterable getAuthors() {
         return this.authorRepository.findAll();
