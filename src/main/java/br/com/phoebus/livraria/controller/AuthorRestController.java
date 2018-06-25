@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Collection;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/authors")
 public class AuthorRestController {
@@ -26,7 +27,6 @@ public class AuthorRestController {
         this.bookRepository = bookRepository;
     }
 
-    @CrossOrigin
     @GetMapping
     public Iterable getAuthors() {
         return this.authorRepository.findAll();
