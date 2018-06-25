@@ -40,6 +40,7 @@ public class AuthorRestController {
     //Duvida
     //Como dar um get nos livros do author apenas com seu id sem usar o find author
     //e passar o objeto
+
     @GetMapping("/{authorId}/books")
     public Collection<Book> getBooksFromAuthor(@PathVariable Long authorId) {
         Author result = getAuthorResult(authorId);
@@ -57,6 +58,7 @@ public class AuthorRestController {
         return ResponseEntity.ok().build();
     }
 
+    @CrossOrigin
     @PostMapping
     public ResponseEntity<?> addAuthor(@RequestBody Author author) {
         Author result = this.authorRepository.save(author);
@@ -72,6 +74,7 @@ public class AuthorRestController {
         return ResponseEntity.created(location).build();
     }
 
+    @CrossOrigin
     @PutMapping("/{authorId}")
     public ResponseEntity<?> updateAuthor(@RequestBody Author author, @PathVariable Long authorId) {
         try {
