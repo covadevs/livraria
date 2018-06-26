@@ -29,7 +29,7 @@ dependencies {
 //    compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-web')
     implementation group: 'oracle', name: 'ojdbc6', version: '11.2.0.3'
-//    runtime('mysql:mysql-connector-java')
+    runtime('mysql:mysql-connector-java')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 //    testCompile('org.springframework.security:spring-security-test')
 }

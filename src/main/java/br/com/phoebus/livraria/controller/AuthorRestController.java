@@ -41,6 +41,7 @@ public class AuthorRestController {
     //Como dar um get nos livros do author apenas com seu id sem usar o find author
     //e passar o objeto
 
+    @CrossOrigin
     @GetMapping("/{authorId}/books")
     public Collection<Book> getBooksFromAuthor(@PathVariable Long authorId) {
         Author result = getAuthorResult(authorId);
