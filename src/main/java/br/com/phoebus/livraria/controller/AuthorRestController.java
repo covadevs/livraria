@@ -91,9 +91,15 @@ public class AuthorRestController {
         }
     }
 
+    @CrossOrigin
     @DeleteMapping("/{authorId}")
     public ResponseEntity deleteAuthor(@PathVariable Long authorId) {
         try {
+            Author result = getAuthorResult(authorId);
+            this.bookRepository.findBooksByAuthorsContaining(result).forEach(book -> {
+                book.getAuthors().remove(result);
+                this.bookRepository.save(book);
+            });
             this.authorRepository.deleteById(authorId);
             return ResponseEntity.ok().build();
         } catch(EmptyResultDataAccessException e) {
