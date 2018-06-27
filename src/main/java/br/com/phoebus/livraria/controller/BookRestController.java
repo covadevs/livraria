@@ -53,6 +53,7 @@ public class BookRestController {
                 .orElseThrow(() -> new BookNotFoundException(bookId));
     }
 
+    @CrossOrigin
     @PostMapping("{bookId}/authors")
     public ResponseEntity<?> addAuthorToBook(@PathVariable Long bookId, @RequestParam(value = "authorId") Long authorId) {
         Author author = validateAuthor(authorId);

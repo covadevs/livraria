@@ -48,15 +48,11 @@ public class AuthorRestController {
         return this.bookRepository.findBooksByAuthorsContaining(result);
     }
 
-    @DeleteMapping("/{authorId}/books/{bookId}")
-    public ResponseEntity<?> removeAuthorFromBook(@PathVariable Long authorId, @PathVariable Long bookId) {
-        Author author = getAuthorResult(authorId);
-        Book book = getBookResult(bookId);
-        book.getAuthors().remove(author);
-
-        this.bookRepository.save(book);
-
-        return ResponseEntity.ok().build();
+    @CrossOrigin
+    @GetMapping("/books")
+    public Collection<Book> getBooksNotContainsAuthor(@RequestParam(value = "authorId") Long authorId) {
+        Author result = getAuthorResult(authorId);
+        return  this.bookRepository.findBooksByAuthorsNotContaining(result);
     }
 
     @CrossOrigin
@@ -101,6 +97,22 @@ public class AuthorRestController {
                 this.bookRepository.save(book);
             });
             this.authorRepository.deleteById(authorId);
+            return ResponseEntity.ok().build();
+        } catch(EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/{authorId}/books/{bookId}")
+    public ResponseEntity removeAuthorFromBook(@PathVariable Long authorId, @PathVariable Long bookId) {
+        try {
+            Book result = getBookResult(bookId);
+            Author author = getAuthorResult(authorId);
+
+            result.getAuthors().remove(author);
+
+            this.bookRepository.save(result);
             return ResponseEntity.ok().build();
         } catch(EmptyResultDataAccessException e) {
             return ResponseEntity.notFound().build();
