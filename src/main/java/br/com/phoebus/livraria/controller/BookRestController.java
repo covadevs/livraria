@@ -3,6 +3,7 @@ package br.com.phoebus.livraria.controller;
 import br.com.phoebus.livraria.exception.AuthorNotFoundException;
 import br.com.phoebus.livraria.exception.BookNotFoundException;
 import br.com.phoebus.livraria.model.Author;
+import br.com.phoebus.livraria.model.Body;
 import br.com.phoebus.livraria.model.Book;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +22,12 @@ public class BookRestController {
     private static Logger log = LoggerFactory.getLogger(BookRestController.class);
     private AuthorRepository authorRepository;
     private BookRepository bookRepository;
+    private Body body;
 
     public BookRestController(AuthorRepository authorRepository, BookRepository bookRepository) {
         this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
+        this.body = new Body();
     }
 
     @GetMapping
@@ -34,6 +37,15 @@ public class BookRestController {
 
     @PostMapping
     public ResponseEntity<?> addBook(@RequestBody Book book) {
+        this.body.getBody().clear();
+
+        boolean bookExists = bookRepository.findBookByTitle(book.getTitle()).isPresent();
+
+        if(bookExists) {
+            this.body.getBody().put("message", "book exists");
+            return ResponseEntity.ok(body.getBody());
+        }
+
         Book result = this.bookRepository.save(book);
 
         URI location = ServletUriComponentsBuilder
@@ -53,7 +65,6 @@ public class BookRestController {
                 .orElseThrow(() -> new BookNotFoundException(bookId));
     }
 
-    @CrossOrigin
     @PostMapping("{bookId}/authors")
     public ResponseEntity<?> addAuthorToBook(@PathVariable Long bookId, @RequestParam(value = "authorId") Long authorId) {
         Author author = validateAuthor(authorId);
@@ -73,6 +84,14 @@ public class BookRestController {
     @PutMapping("/{bookId}")
     public ResponseEntity<?> updateBook(@PathVariable Long bookId, @RequestBody Book book) {
         try {
+            this.body.getBody().clear();
+            boolean bookExists = bookRepository.findBookByTitle(book.getTitle()).isPresent();
+
+            if(bookExists) {
+                this.body.getBody().put("message", "book exists");
+                return ResponseEntity.ok(body.getBody());
+            }
+
             this.bookRepository.findById(bookId).ifPresent(result -> {
                 book.setId(result.getId());
                 book.setUri(result.getUri());

@@ -5,6 +5,7 @@ import br.com.phoebus.livraria.model.Book;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface BookRepository extends CrudRepository<Book, Long> {
@@ -13,5 +14,6 @@ public interface BookRepository extends CrudRepository<Book, Long> {
     Optional<Book> findBookByDescription(String description);
     Collection<Book> findAllByTitleContaining(String title);
     Collection<Book> findBooksByAuthorsContaining(Author author);
+    //Collection<Book> findByAuthorsNameIn(List<String> authorNames);
     Collection<Book> findBooksByAuthorsNotContaining(Author author);
 }

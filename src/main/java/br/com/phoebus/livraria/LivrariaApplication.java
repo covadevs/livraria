@@ -7,8 +7,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.Arrays;
+import java.util.concurrent.Executor;
 
 @SpringBootApplication
 public class LivrariaApplication {
@@ -16,16 +19,4 @@ public class LivrariaApplication {
     public static void main(String[] args) {
         SpringApplication.run(LivrariaApplication.class, args);
     }
-
-//    @Bean
-//    public CommandLineRunner init(AuthorRepository authorRepository) {
-//        return (evt) -> Arrays.asList("leonardo,rafaela,sam,joao,jose".split(","))
-//                .forEach(element -> {
-//                    try {
-//                        Author author = authorRepository.save(new Author(element));
-//                    } catch(DataIntegrityViolationException exception) {
-//                        exception.getMessage();
-//                    }
-//                });
-//    }
 }

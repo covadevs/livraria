@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface AuthorRepository extends CrudRepository<Author, Long> {
 
-    Optional<Author> findAuthorByName(String name);
+    Optional<Author> findByName(String name);
+    boolean existsByName(String name);
     Collection<Author> findAllByNameContaining(String name);
 }
