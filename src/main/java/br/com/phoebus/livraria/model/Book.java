@@ -15,8 +15,10 @@ public class Book {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String description;
 
     @Column(unique = true)
